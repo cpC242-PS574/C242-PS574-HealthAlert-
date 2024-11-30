@@ -9,7 +9,7 @@ require('dotenv').config();
 const generateToken = (userId) => {
     const payload = {userId};
     const secret = process.env.JWT_SECRET;
-    const options = {expiresIn: '1h'};
+    const options = {expiresIn: '10h'};
     return jwt.sign(payload, secret, options);
 };
 
@@ -220,5 +220,23 @@ exports.resetPassword = async (request, h) => {
     } catch (error) {
         console.error(error);
         return h.response({error: 'Internal Server Error'}).code(500);
+    }
+};
+
+exports.getHeartTests = async (request, h) => {
+    const userId = request.user.userId;
+
+    try {
+        const [testResults] = await pool.query('SELECT * FROM user_heart_tests WHERE user_id = ? ORDER BY test_date DESC, test_time DESC', [userId]);
+        console.log('Query Result:', testResults);
+
+        if (testResults.length === 0) {
+            return h.response({ error: 'No heart test results found' }).code(404);
+        }
+
+        return h.response({ heartTests: testResults }).code(200);
+    } catch (error) {
+        console.error('Error in getHeartTests Handler:', error.message, error.stack);
+        return h.response({ error: 'Internal Server Error' }).code(500);
     }
 };
