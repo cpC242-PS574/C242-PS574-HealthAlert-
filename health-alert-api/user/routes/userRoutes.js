@@ -52,4 +52,12 @@ module.exports = [
             pre: [{method: verifyToken, assign: 'auth'}],
         },
     },
+    {
+        method: 'POST',
+        path: '/heart-test',
+        handler: userController.addHeartTest,
+        options: {
+            pre: [{ method: verifyToken, assign: 'auth' }],
+        },
+    },
 ];

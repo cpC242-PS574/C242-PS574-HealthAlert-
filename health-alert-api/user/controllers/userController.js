@@ -223,6 +223,27 @@ exports.resetPassword = async (request, h) => {
     }
 };
 
+exports.addHeartTest = async (request, h) => {
+    const { restHeartRate, exerciseHeartRate, testDate, testTime, result } = request.payload;
+    const userId = request.user.userId;
+
+    if (!restHeartRate || !exerciseHeartRate || !testDate || !testTime || !result) {
+        return h.response({ error: 'All fields are required' }).code(400);
+    }
+
+    try {
+        await pool.query(
+            'INSERT INTO user_heart_tests (user_id, rest_heart_rate, exercise_heart_rate, test_date, test_time, result) VALUES (?, ?, ?, ?, ?, ?)',
+            [userId, restHeartRate, exerciseHeartRate, testDate, testTime, result]
+        );
+
+        return h.response({ message: 'Heart test added successfully' }).code(201);
+    } catch (error) {
+        console.error('Error in addHeartTest Handler:', error.message, error.stack);
+        return h.response({ error: 'Internal Server Error' }).code(500);
+    }
+};
+
 exports.getHeartTests = async (request, h) => {
     const userId = request.user.userId;
 
@@ -240,3 +261,4 @@ exports.getHeartTests = async (request, h) => {
         return h.response({ error: 'Internal Server Error' }).code(500);
     }
 };
+
