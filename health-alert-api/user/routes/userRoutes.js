@@ -44,20 +44,4 @@ module.exports = [
         path: '/reset-password',
         handler: userController.resetPassword,
     },
-    {
-        method: 'GET',
-        path: '/heart-test',
-        handler: userController.getHeartTests,
-        options: {
-            pre: [{method: verifyToken, assign: 'auth'}],
-        },
-    },
-    {
-        method: 'POST',
-        path: '/heart-test',
-        handler: userController.addHeartTest,
-        options: {
-            pre: [{ method: verifyToken, assign: 'auth' }],
-        },
-    },
 ];
