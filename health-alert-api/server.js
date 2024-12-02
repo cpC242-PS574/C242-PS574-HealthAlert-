@@ -1,5 +1,6 @@
 const Hapi = require('@hapi/hapi');
 const userRoutes = require('./user/routes/userRoutes');
+const heartRoutes = require('./user/routes/heartRoutes');
 require('dotenv').config();
 
 const init = async () => {
@@ -8,7 +9,7 @@ const init = async () => {
         host: 'localhost',
     });
 
-    server.route(userRoutes);
+    server.route([...userRoutes, ...heartRoutes]);
 
     await server.start();
     console.log(`Server running on ${server.info.uri}`);

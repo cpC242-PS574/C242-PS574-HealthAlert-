@@ -13,11 +13,11 @@ CREATE TABLE users (
 CREATE TABLE user_heart_tests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    rest_heart_rate INT NOT NULL,
     exercise_heart_rate INT NOT NULL,
     test_date DATE NOT NULL,
     test_time TIME NOT NULL,
-    result VARCHAR(50) NOT NULL,
+    result FLOAT NOT NULL,
+    indicator VARCHAR(10) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
