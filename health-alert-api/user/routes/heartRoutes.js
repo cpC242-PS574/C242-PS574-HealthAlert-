@@ -1,4 +1,3 @@
-const { assign } = require('nodemailer/lib/shared');
 const heartTestController = require('../controllers/heartController');
 const verifyToken = require('../middleware/authMiddleware');
 
