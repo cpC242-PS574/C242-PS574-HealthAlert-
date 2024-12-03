@@ -1,6 +1,8 @@
 const Hapi = require('@hapi/hapi');
 const userRoutes = require('./user/routes/userRoutes');
 const heartRoutes = require('./user/routes/heartRoutes');
+const articleRoutes = require('./article-vitamin/routes/articleRoutes');
+const vitaminRoutes = require('./article-vitamin/routes/vitaminRoutes');
 require('dotenv').config();
 
 const init = async () => {
@@ -9,7 +11,7 @@ const init = async () => {
         host: 'localhost',
     });
 
-    server.route([...userRoutes, ...heartRoutes]);
+    server.route([...userRoutes, ...heartRoutes, ...articleRoutes, ...vitaminRoutes]);
 
     await server.start();
     console.log(`Server running on ${server.info.uri}`);
