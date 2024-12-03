@@ -9,18 +9,18 @@ const getNearbyHospitals = async (latitude, longitude) => {
     const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&type=${type}&key=${apiKey}`;
     const response = await axios.get(url);
 
-    if(response.data.status !== 'OK') {
-        throw new error('Failed to fetch hospitals');
+    if (response.data.status !== 'OK') {
+        throw new Error('Failed to fetch hospitals');
     }
 
     return response.data.results;
 };
 
-const getTravelTimes = async (userLocation, hospitalLocation) => {
+const getTravelTimes = async (userLocation, hospitalLocations) => {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
     const origins = `${userLocation.latitude},${userLocation.longitude}`;
-    const destinations = hospitalLocation.map(loc => `${loc.lat},${loc.lng}`).join('|');
+    const destinations = hospitalLocations.map(loc => `${loc.lat},${loc.lng}`).join('|');
 
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origins}&destinations=${destinations}&key=${apiKey}`;
     const response = await axios.get(url);
@@ -33,28 +33,35 @@ const getTravelTimes = async (userLocation, hospitalLocation) => {
 };
 
 exports.getNearbyHospitalsHandler = async (request, h) => {
-    const {latitude, longitude} = request.payload;
+    const { latitude, longitude } = request.payload; 
 
     if (!latitude || !longitude) {
-        return h.response({error: 'Latitude and longitude are required'}).code(400);
+        return h.response({ error: 'Latitude and longitude are required' }).code(400);
     }
 
     try {
         const hospitals = await getNearbyHospitals(latitude, longitude);
 
-        const hospitalLocation = hospitals.map(hospital => hospital.geometry.location);
+        const filteredHospitals = hospitals.filter(hospital => {
+            const hospitalName = hospital.name.toLowerCase();
+            return hospitalName.includes('rumah sakit') || hospitalName.includes('hospital');
+        });
 
-        const travelTimes = await getTravelTimes({latitude, longitude}, hospitalLocation);
+        const hospitalLocations = filteredHospitals.map(hospital => hospital.geometry.location);
 
-        const hospitalData = hospitals.map((hospital, index) => ({
+        const travelTimes = await getTravelTimes({ latitude, longitude }, hospitalLocations);
+
+        const hospitalData = filteredHospitals.map((hospital, index) => ({
             name: hospital.name,
             location: hospital.geometry.location,
             duration: travelTimes[index].duration?.text || 'N/A',
         }));
 
-        return h.response({hospitals: hospitalData}).code(200);
+        const closestHospitals = hospitalData.slice(0, 3);
+
+        return h.response({ hospitals: closestHospitals }).code(200);
     } catch (error) {
         console.error(error);
-        return h.response({error: 'Internal server error'}).code(500);
+        return h.response({ error: 'Internal server error' }).code(500);
     }
 };

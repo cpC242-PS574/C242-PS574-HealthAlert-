@@ -2,7 +2,7 @@ const pool = require('../../db/db');
 
 exports.getAllArticles = async (request, h) => {
     try {
-        const [articles] = await pool.query('SELECT * FROM article ORDER BY created_at DESC');
+        const [articles] = await pool.query('SELECT * FROM articles ORDER BY id ASC');
 
         if (articles.length === 0) {
             return h.response({error: 'No articles found'}).code(404);
