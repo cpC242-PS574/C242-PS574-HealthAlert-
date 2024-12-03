@@ -4,6 +4,7 @@ const sendOTP = require('../utils/email');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { register } = require('module');
+const { log } = require('console');
 require('dotenv').config();
 
 const generateToken = (userId) => {
@@ -220,5 +221,22 @@ exports.resetPassword = async (request, h) => {
     } catch (error) {
         console.error(error);
         return h.response({error: 'Internal Server Error'}).code(500);
+    }
+};
+
+exports.saveUserLocation = async (request, h) => {
+    const userId = request.auth.credentials.userId;
+    const {latitude, longitude} = request.payload;
+
+    if(!latitude || !longitude) {
+        return h.response({error: 'Latitude and longitude are required'}).code(400);
+    }
+
+    try {
+        await pool.query('UPDATE users SET latitude = ?, longitude = ? WHERE id = ', [latitude, longitude, userId]);
+        return h.response({message: 'Location update successfully'}).code(200);
+    } catch (error) {
+        console.error(error);
+        return h.response({error: 'Internal server error'}).code(500);
     }
 };
