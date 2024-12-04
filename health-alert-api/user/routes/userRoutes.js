@@ -44,4 +44,13 @@ module.exports = [
         path: '/reset-password',
         handler: userController.resetPassword,
     },
+    {
+        method: 'GET',
+        path: '/reset-password',
+        handler: {
+            file: {
+                path: 'public/reset-password.html'
+            }
+        }
+    },
 ];

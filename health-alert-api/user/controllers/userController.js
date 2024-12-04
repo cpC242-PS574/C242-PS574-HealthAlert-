@@ -10,7 +10,7 @@ require('dotenv').config();
 const generateToken = (userId) => {
     const payload = {userId};
     const secret = process.env.JWT_SECRET;
-    const options = {expiresIn: '10h'};
+    const options = {expiresIn: '24h'};
     return jwt.sign(payload, secret, options);
 };
 
@@ -25,30 +25,46 @@ exports.registerUser = async (request, h) => {
         return h.response({ error: 'Full name, email and password are required'}).code(400);
     }
 
-    try{
-        //Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        // Check existing user
         const [existingUser] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-        if(existingUser.length > 0){
-            return h.response({error: 'Email already registered'}).code(409);
+        
+        if (existingUser.length > 0) {
+            // If user exists but not verified, allow re-registration
+            if (!existingUser[0].is_verified) {
+                // Delete any existing OTP for this email
+                await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
+            } else {
+                // If user exists and is verified, return error
+                return h.response({ error: 'Email already registered' }).code(409);
+            }
         }
 
-        const [result] = await pool.query('INSERT INTO users (fullname, email, password) VALUES (?, ?,?)', 
-            [fullname, email, hashedPassword]);
+        // Hash password and continue with registration
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Insert or update user
+        if (existingUser.length > 0 && !existingUser[0].is_verified) {
+            await pool.query('UPDATE users SET password = ? WHERE email = ?', [hashedPassword, email]);
+        } else {
+            await pool.query('INSERT INTO users (fullname, email, password) VALUES (?, ?, ?)', 
+                [fullname, email, hashedPassword]);
+        }
 
-        // Generate OTP dan pengaturan kedaluwarsa
+        // Generate and send new OTP
         const otp = generateOTP();
         const expiresAt = new Date();
-        expiresAt.setMinutes(expiresAt.getMinutes() + 5);
+        expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-        await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', [email, otp, expiresAt]);
+        await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', 
+            [email, otp, expiresAt]);
 
         await sendOTP(email, otp);
 
-        return h.response({message: 'User registered. OTP sent to email for verification.'}).code(201);
-    } catch (error){
+        return h.response({ message: 'User registered. OTP sent to email for verification.' }).code(201);
+    } catch (error) {
         console.error(error);
-        return h.response({error: 'Internal Server Error'}).code(500);
+        return h.response({ error: 'Internal Server Error' }).code(500);
     }
 };
 
@@ -64,7 +80,8 @@ exports.verifyOTP = async (request, h) => {
         const now = new Date();
         if(new Date(otpRecord[0].expires_at) < now){
             await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
-            return h.response({error: 'OTP has expired'}).code(400);
+            await pool.query('DELETE FROM users WHERE email = ?', [email]);
+            return h.response({error: 'OTP has expired, please register again'}).code(400);
         }
 
         await pool.query('UPDATE users SET is_verified = ? WHERE email = ?', [true, email]);
@@ -167,21 +184,26 @@ exports.forgotPassword = async (request, h) => {
         return h.response({error: 'Email is required'}).code(400);
     }
 
-    try{
-        // Periksa apakah email terdaftar
+    try {
+        // Check if email exists
         const [user] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
         if(user.length === 0) {
             return h.response({error: 'Email not found'}).code(404);
         }
 
-        //OTP
+        // Delete existing OTP codes for this email
+        await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
+
+        // Generate new OTP
         const otp = generateOTP();
         const expiresAt = new Date();
-        expiresAt.setMinutes(expiresAt.getMinutes() + 5);
+        expiresAt.setMinutes(expiresAt.getMinutes() + 60);
 
-        await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', [email, otp, expiresAt]);
+        // Save new OTP
+        await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', 
+            [email, otp, expiresAt]);
 
-        //Kirim OTP
+        // Send OTP
         await sendOTP(email, otp);
 
         return h.response({message: 'OTP sent to email for password reset'}).code(200);
@@ -203,13 +225,13 @@ exports.resetPassword = async (request, h) => {
         const [otpRecord] = await pool.query('SELECT * FROM otp_codes WHERE email = ? ORDER BY created_at DESC LIMIT 1', [email]);
 
         if (otpRecord.length === 0 || otpRecord[0].otp !== otp) {
-            return h.response({error: 'Invalid or expired OTP'}).code(400);
+            return h.response({error: 'Invalid or expired OTP'}).code(404);
         }
 
         const now = new Date();
         if (new Date(otpRecord[0].expires_at) < now) {
             await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
-            return h.response({error: 'OTP has expired'}).code(400);
+            return h.response({error: 'OTP has expired'}).code(410);
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);

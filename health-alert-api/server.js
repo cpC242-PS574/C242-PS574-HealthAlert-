@@ -4,6 +4,7 @@ const heartRoutes = require('./user/routes/heartRoutes');
 const articleRoutes = require('./article-vitamin/routes/articleRoutes');
 const vitaminRoutes = require('./article-vitamin/routes/vitaminRoutes');
 const hospitalRoutes = require('./user/routes/hospitalRoutes');
+const Inert = require('@hapi/inert');
 require('dotenv').config();
 
 const init = async () => {
@@ -11,6 +12,8 @@ const init = async () => {
         port: 3000,
         host: 'localhost',
     });
+
+    await server.register(Inert);
 
     server.route([
         ...userRoutes, 
