@@ -11,22 +11,6 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendEmail = async (email, subject, textContent) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: subject,
-        text: textContent,
-    };
-
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log('Email sent to:', email);
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
-};
-
 const sendVerificationEmail = async (email, otp, fullname) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
@@ -41,9 +25,11 @@ const sendVerificationEmail = async (email, otp, fullname) => {
                 
                 <p style="font-size: 16px; color: #333;">Terima kasih telah mendaftar di <strong>HealthAlert</strong>. Untuk menyelesaikan pendaftaran, silakan verifikasi email Anda dengan memasukkan kode OTP berikut:</p>
                 
+                <div style="text-align: center">
                 <p style="font-size: 18px; color: #333; background-color: #FFD700; padding: 10px; text-align: center; border-radius: 5px; display: inline-block;">
                     <strong>${otp}</strong>
                 </p>
+                </div>
                 
                 <p style="font-size: 14px; color: #666; margin-top: 20px;">Kode OTP ini berlaku selama 5 menit. Jika Anda tidak melakukan pendaftaran, abaikan email ini.</p>
                 
@@ -60,8 +46,8 @@ const sendVerificationEmail = async (email, otp, fullname) => {
     }
 };
 
-const sendPasswordResetOTP = async (email, otp, fullname) => {
-    const mailOptions = {
+const sendPasswordResetOTP = async (email, otp, fullname, protocol, host) => {
+        const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
         subject: 'Reset Kata Sandi Anda',
@@ -78,7 +64,7 @@ const sendPasswordResetOTP = async (email, otp, fullname) => {
                 <p style="font-size: 18px; color: #333;">
                     <strong>${otp}</strong>
             <div>
-                <a href="https://api-endpoin.com/reset-password?email=${email}&otp=${otp}" 
+                <a href="${protocol}://${host}/reset-password?email=${email}&otp=${otp}" 
                 style="display: inline-block; margin-top: 2px; padding: 10px 20px; background-color: #FFD700; color: #333; text-decoration: none; font-size: 16px; border-radius: 5px; text-align: center;">
                 Reset Kata Sandi
                 </a>
@@ -128,4 +114,4 @@ const sendPasswordResetSuccess = async (email, fullname) => {
 };
 
 
-module.exports = { sendVerificationEmail, sendPasswordResetOTP, sendPasswordResetSuccess, sendEmail };
+module.exports = { sendVerificationEmail, sendPasswordResetOTP, sendPasswordResetSuccess };

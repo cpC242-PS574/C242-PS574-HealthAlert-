@@ -1,6 +1,6 @@
 const pool = require('../../db/db');
 const bcrypt = require('bcryptjs');
-const {sendEmail} = require('../utils/email');
+const { sendVerificationEmail, sendPasswordResetOTP, sendPasswordResetSuccess } = require('../utils/email');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { register } = require('module');
@@ -59,7 +59,7 @@ exports.registerUser = async (request, h) => {
         await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', 
             [email, otp, expiresAt]);
 
-        await sendEmail(email, otp);
+        await sendVerificationEmail(email, otp, fullname);
 
         return h.response({ message: 'User registered. OTP sent to email for verification.' }).code(201);
     } catch (error) {
@@ -87,7 +87,7 @@ exports.verifyOTP = async (request, h) => {
         await pool.query('UPDATE users SET is_verified = ? WHERE email = ?', [true, email]);
 
         await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
-
+        
         return h.response({message: 'Email verified successfully'}).code(200);
     } catch (error){
         console.error(error);
@@ -179,6 +179,8 @@ exports.updatePassword = async (request, h) => {
 
 exports.forgotPassword = async (request, h) => {
     const {email} = request.payload;
+    const protocol = request.server.info.protocol; // Mendapatkan protokol (http atau https)
+    const host = request.info.host; // Mendapatkan host (domain atau IP + port)
 
     if(!email) {
         return h.response({error: 'Email is required'}).code(400);
@@ -200,11 +202,13 @@ exports.forgotPassword = async (request, h) => {
         expiresAt.setMinutes(expiresAt.getMinutes() + 60);
 
         // Save new OTP
+        const [userRecord] = await pool.query('SELECT fullname FROM users WHERE email = ?', [email]);
+        const fullname = userRecord[0].fullname;
         await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', 
             [email, otp, expiresAt]);
 
         // Send OTP
-        await sendEmail(email, otp);
+        await sendPasswordResetOTP(email, otp, fullname, protocol, host);
 
         return h.response({message: 'OTP sent to email for password reset'}).code(200);
     } catch (error) {
@@ -239,6 +243,9 @@ exports.resetPassword = async (request, h) => {
 
         await pool.query('DELETE FROM otp_codes WHERE email = ?', [email]);
 
+        const [userRecord] = await pool.query('SELECT fullname FROM users WHERE email = ?', [email]);
+        const fullname = userRecord[0].fullname;
+        sendPasswordResetSuccess(email, fullname);
         return h.response({message: 'Password reset successfully'}).code(200);
     } catch (error) {
         console.error(error);
