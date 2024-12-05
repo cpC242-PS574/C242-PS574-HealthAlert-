@@ -128,4 +128,4 @@ const sendPasswordResetSuccess = async (email, fullname) => {
 };
 
 
-module.exports = { sendVerificationEmail, sendPasswordResetOTP, sendPasswordResetSuccess };
+module.exports = { sendVerificationEmail, sendPasswordResetOTP, sendPasswordResetSuccess, sendEmail };

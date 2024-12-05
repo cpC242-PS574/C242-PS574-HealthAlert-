@@ -1,6 +1,6 @@
 const pool = require('../../db/db');
 const bcrypt = require('bcryptjs');
-const sendEmail = require('../utils/email');
+const {sendEmail} = require('../utils/email');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { register } = require('module');
