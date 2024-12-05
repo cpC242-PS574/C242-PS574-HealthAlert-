@@ -1,6 +1,6 @@
 const pool = require('../../db/db');
 const bcrypt = require('bcryptjs');
-const sendOTP = require('../utils/email');
+const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { register } = require('module');
@@ -59,7 +59,7 @@ exports.registerUser = async (request, h) => {
         await pool.query('INSERT INTO otp_codes (email, otp, expires_at) VALUES (?, ?, ?)', 
             [email, otp, expiresAt]);
 
-        await sendOTP(email, otp);
+        await sendEmail(email, otp);
 
         return h.response({ message: 'User registered. OTP sent to email for verification.' }).code(201);
     } catch (error) {
@@ -204,7 +204,7 @@ exports.forgotPassword = async (request, h) => {
             [email, otp, expiresAt]);
 
         // Send OTP
-        await sendOTP(email, otp);
+        await sendEmail(email, otp);
 
         return h.response({message: 'OTP sent to email for password reset'}).code(200);
     } catch (error) {
