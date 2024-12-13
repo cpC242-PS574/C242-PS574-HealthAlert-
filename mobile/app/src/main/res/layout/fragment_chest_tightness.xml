@@ -1,0 +1,101 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Konten Utama -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="fill_horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chesstight"
+            android:textSize="24sp"
+            android:layout_marginBottom="21dp"
+            android:textAlignment="textStart" />
+
+        <LinearLayout
+            android:id="@+id/chestTightnessButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_yes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/orange"
+                android:textColor="@color/white"
+                android:layout_marginBottom="24dp"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:text="@string/ya" />
+
+            <Button
+                android:id="@+id/btn_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/orange"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:text="@string/no" />
+        </LinearLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="fill_horizontal"
+            android:layout_marginTop="32dp">
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:backgroundTint="@color/orange_transparent"
+                android:textColor="@color/black"
+                android:text="Kembali" />
+
+            <Button
+                android:id="@+id/btn_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="end"
+                android:textSize="16sp"
+                android:padding="14dp"
+                android:backgroundTint="@color/orange"
+                android:textColor="@color/white"
+                android:enabled="false" />
+        </GridLayout>
+    </LinearLayout>
+
+    <!-- Overlay untuk Loading -->
+    <View
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:indeterminate="true" />
+
+</FrameLayout>

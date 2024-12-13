@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_instruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/restingbpm"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="21dp"/>
+
+    <TextView
+        android:id="@+id/timer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Timer"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="21dp"
+        android:textAlignment="center" />
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/preview_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="21dp"
+        android:contentDescription="Camera preview" />
+
+    <TextView
+        android:id="@+id/bpm_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:text="BPM"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/start_stop_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
+        android:textColor="@color/white"
+        android:text="@string/start"
+        android:textSize="17sp"
+        android:padding="14dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="21dp"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="fill_horizontal"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:backgroundTint="@color/orange_transparent"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:text="@string/back" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:backgroundTint="@color/orange"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:textColor="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginStart="16dp" />
+    </GridLayout>
+</LinearLayout>

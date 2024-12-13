@@ -1,0 +1,88 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/welcom"
+            android:textSize="24sp"
+            android:textAlignment="textStart"
+            android:layout_marginBottom="14dp"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:contentDescription=""
+            android:src="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/intro1"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginTop="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intro2"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intro3"
+        android:textSize="16sp"
+        android:textAlignment="viewStart"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/intro4"
+        android:textSize="16sp"
+        android:textAlignment="textStart"
+        android:layout_marginTop="11dp" />
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Mulai"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:backgroundTint="@color/orange"
+            android:padding="14dp"
+            android:layout_marginTop="32dp" />
+
+        <!-- CardView untuk menampilkan riwayat terakhir -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/last_result_cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp"
+            android:elevation="4dp">
+
+            <TextView
+                android:id="@+id/last_result_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:padding="14dp"/>
+
+        </androidx.cardview.widget.CardView>
+</LinearLayout>

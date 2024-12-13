@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jenis Kelamin"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <!-- Menggunakan LinearLayout untuk menggantikan RadioGroup -->
+    <LinearLayout
+        android:id="@+id/genderButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
+        <!-- Tombol untuk Male -->
+        <Button
+            android:id="@+id/btn_male"
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/orange"
+            android:drawableLeft="@drawable/baseline_male"
+            android:drawableTint="@color/white"
+            android:textColor="@color/white"
+            android:layout_height="60dp"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:text="@string/male"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Tombol untuk Female -->
+        <Button
+            android:id="@+id/btn_female"
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/orange"
+            android:drawableLeft="@drawable/baseline_female"
+            android:drawableTint="@color/white"
+            android:textColor="@color/white"
+            android:layout_height="60dp"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:text="@string/female"
+            android:layout_marginBottom="24dp"/>
+    </LinearLayout>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="fill_horizontal"
+        android:layout_marginTop="32dp">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textSize="16sp"
+            android:padding="14dp"
+            android:text="@string/back"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/orange_transparent"/>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:text="@string/next"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/orange"/>
+    </GridLayout>
+</LinearLayout>

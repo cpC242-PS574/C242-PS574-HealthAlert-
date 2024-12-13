@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Heart Alert</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="back_button_desc">Ikon kembali</string>
+    <string name="article_image_desc">Gambar dari artikel terkait</string>
+    <string name="male">Laki-laki</string>
+    <string name="female">Perempuan</string>
+    <string name="back">Kembali</string>
+    <string name="next">Lanjut</string>
+    <string name="insert_age">Masukkan Umur</string>
+    <string name="ya">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="chestpain">Rating tingkat nyeri dada anda</string>
+    <string name="restingbpm">Ukur detak jantung anda saat anda sedang santai.</string>
+    <string name="activitybpm">Ukur Detak jantung anda saat anda Berolahraga</string>
+    <string name="chesstight">Apakah olahraga menyebabkan sesak dada?</string>
+    <string name="done">Selesai</string>
+    <string name="intro1">Sebelum memulai, harap perhatikan:</string>
+    <string name="intro2">• Aplikasi ini hanya menampilkan informasi mengenai kesehatan jantung anda.</string>
+    <string name="intro3">• Aplikasi ini mungkin tidak akurat. Akurasi pengukuran berdasarkan kualitas kamera, dan pencahayaan pada ponsel anda.</string>
+    <string name="intro4">Jika terdapat tanda-tanda serius pada tubuh anda, jangan menunda untuk mengunjungi dokter.</string>
+    <string name="welcom">Hi, Selamat Datang!</string>
+    <string name="start">Mulai</string>
+    <string name="modelMl">https://model-service-218244789825.asia-southeast2.run.app/predict</string>
+</resources>

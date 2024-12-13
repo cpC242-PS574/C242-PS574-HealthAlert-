@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/introFragment">
+
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.dicoding.intro.IntroFragment"
+        android:label="HealthAlert"
+        tools:layout="@layout/fragment_intro">
+        <action
+            android:id="@+id/action_introFragment_to_genderFragment"
+            app:destination="@id/genderFragment" />
+        <action
+            android:id="@+id/action_introFragment_to_allHistoryFragment"
+            app:destination="@id/allHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/genderFragment"
+        android:name="com.dicoding.intro.GenderFragment"
+        android:label="Jenis Kelamin"
+        tools:layout="@layout/fragment_gender">
+        <action
+            android:id="@+id/action_genderFragment_to_ageFragment"
+            app:destination="@id/ageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ageFragment"
+        android:name="com.dicoding.intro.AgeFragment"
+        android:label="Umur"
+        tools:layout="@layout/fragment_age">
+        <action
+            android:id="@+id/action_ageFragment_to_chestPainQuestionFragment"
+            app:destination="@id/chestPainQuestionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chestPainQuestionFragment"
+        android:name="com.dicoding.intro.ChestPainQuestionFragment"
+        android:label="Tingkat Sakit Dada"
+        tools:layout="@layout/fragment_chest_pain_question">
+        <action
+            android:id="@+id/action_chestPainQuestionFragment_to_chestPainSliderFragment"
+            app:destination="@id/chestPainSliderFragment" />
+        <action
+            android:id="@+id/action_chestPainQuestionFragment_to_restingBpmFragment"
+            app:destination="@id/restingBpmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chestPainSliderFragment"
+        android:name="com.dicoding.intro.ChestPainSliderFragment"
+        android:label="Tingkat Sakit Dada"
+        tools:layout="@layout/fragment_chest_pain_slider">
+        <action
+            android:id="@+id/action_chestPainSliderFragment_to_restingBpmFragment"
+            app:destination="@id/restingBpmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/restingBpmFragment"
+        android:name="com.dicoding.intro.RestingBpmFragment"
+        android:label="Detak Jantung Istirahat"
+        tools:layout="@layout/fragment_resting_bpm">
+        <action
+            android:id="@+id/action_restingBpmFragment_to_chestPainQuestionFragment"
+            app:destination="@id/chestPainQuestionFragment" />
+        <action
+            android:id="@+id/action_restingBpmFragment_to_activityBpmFragment"
+            app:destination="@id/activityBpmFragment" />
+        <action
+            android:id="@+id/action_restingBpmFragment_to_chestPainSliderFragment"
+            app:destination="@id/chestPainSliderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/activityBpmFragment"
+        android:name="com.dicoding.intro.ActivityBpmFragment"
+        android:label="Detak Jantung Olahraga"
+        tools:layout="@layout/fragment_activity_bpm">
+        <action
+            android:id="@+id/action_activityBpmFragment_to_chestTightnessFragment"
+            app:destination="@id/chestTightnessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chestTightnessFragment"
+        android:name="com.dicoding.intro.ChestTightnessFragment"
+        android:label="Sesak Dada"
+        tools:layout="@layout/fragment_chest_tightness">
+        <action
+            android:id="@+id/action_chestTightnessFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.dicoding.heartalert2.ResultFragment"
+        android:label="Hasil"
+        tools:layout="@layout/fragment_result">
+        <action
+            android:id="@+id/action_resultFragment_to_introFragment"
+            app:destination="@+id/introFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/allHistoryFragment"
+        android:name="com.dicoding.heartalert2.AllHistoryFragment"
+        android:label="Riwayat Pengukuran"
+        tools:layout="@layout/fragment_all_history"/>
+</navigation>
