@@ -55,3 +55,7 @@ The API endpoints and their functionalities are documented in the [API Documenta
 
 To deploy the backend, you can use platforms like Google Cloud Run. Ensure your environment variables and cloud services are properly configured for production.
 
+## Downloadble APP
+
+To access the app, you can download the app from the link provided. [HealthAlert APP](https://drive.google.com/file/d/1iO54bYQ0eoQZTvWS20C9Us-QVPrrU6E5/view?usp=drive_link).
+
